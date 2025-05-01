@@ -1,0 +1,59 @@
+= form_with model: @proponent, local: true do |f|
+  .row
+    .col-md-6
+      = f.label :name
+      = f.text_field :name, class: "form-control"
+
+    .col-md-6
+      = f.label :documents
+      = f.text_field :documents, class: "form-control"
+
+  .row
+    .col-md-6
+      = f.label :birth_date
+      = f.date_select :birth_date, class: "form-control"
+
+    .col-md-6
+      = f.label :salary
+      = f.number_field :salary, step: 0.01, class: "form-control", id: "salary_field"
+
+  .row
+    .col-md-6
+      = f.label :inss_discount
+      = f.number_field :inss_discount, step: 0.01, class: "form-control", readonly: true, id: "inss_discount_field"
+
+  = f.fields_for :addresses do |a|
+    h4 Endereço
+    .row
+      .col-md-8
+        = a.label :street
+        = a.text_field :street, class: "form-control"
+      .col-md-4
+        = a.label :number
+        = a.text_field :number, class: "form-control"
+    .row
+      .col-md-6
+        = a.label :neighborhood
+        = a.text_field :neighborhood, class: "form-control"
+      .col-md-6
+        = a.label :city
+        = a.text_field :city, class: "form-control"
+    .row
+      .col-md-6
+        = a.label :state
+        = a.text_field :state, class: "form-control"
+      .col-md-6
+        = a.label :zip_code
+        = a.text_field :zip_code, class: "form-control"
+
+  = f.fields_for :contacts do |c|
+    h4 Contato
+    .row
+      .col-md-6
+        = c.label :contact_type
+        = c.select :contact_type, Contact.contact_types.keys.map { |k| [k.humanize, k] }, {}, class: "form-control"
+      .col-md-6
+        = c.label :value
+        = c.text_field :value, class: "form-control"
+
+  = f.submit "Salvar", class: "btn btn-primary mt-3"
