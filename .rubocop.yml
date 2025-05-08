@@ -1,16 +1,15 @@
-# Omakase Ruby styling for Rails
 inherit_gem: { rubocop-rails-omakase: rubocop.yml }
-# .rubocop.yml
-require: rubocop-rails
+plugins:
+  - rubocop-rails
 
 AllCops:
   TargetRubyVersion: 3.2
   NewCops: enable
   Exclude:
-    - 'db/schema.rb'
-    - 'bin/**/*'
-    - 'node_modules/**/*'
-    - 'vendor/**/*'
+    - "db/schema.rb"
+    - "bin/**/*"
+    - "node_modules/**/*"
+    - "vendor/**/*"
 
 Layout/LineLength:
   Max: 120

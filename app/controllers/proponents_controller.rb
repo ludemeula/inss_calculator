@@ -46,10 +46,23 @@ class ProponentsController < ApplicationController
     redirect_to proponents_path, notice: "Proponente removido com sucesso!"
   end
 
+  def salary_report
+    @ranges = {
+      "Até R$ 2.000" => 0...2000,
+      "R$ 2.000 - R$ 5.000" => 2000...5000,
+      "R$ 5.000 - R$ 10.000" => 5000...10_000,
+      "Acima de R$ 10.000" => 10_000..Float::INFINITY
+    }
+
+    @report_data = @ranges.transform_values do |range|
+      Proponent.where(salary: range).count
+    end
+  end
+
   def calculate_inss
     salary = params[:salary].to_f
     discount = InssCalculator.calculate(salary)
-    render json: { discount: discount }
+    render json: { inss_discount: discount }
   end
 
   private

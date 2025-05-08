@@ -1,0 +1,52 @@
+<h1 class="mb-4 text-center">Relatório de Faixas Salariais</h1>
+
+<div class="mb-4">
+  <table class="table table-bordered table-striped">
+    <thead class="table-light">
+      <tr>
+        <th>Faixa Salarial</th>
+        <th>Quantidade de Funcionários</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @report_data.each do |faixa, quantidade| %>
+        <tr>
+          <td><%= faixa %></td>
+          <td><%= quantidade %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<div class="mt-5">
+  <canvas id="salaryChart" height="100"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const ctx = document.getElementById('salaryChart').getContext('2d');
+  const salaryChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: <%= raw @report_data.keys.to_json %>,
+      datasets: [{
+        label: 'Quantidade de Funcionários',
+        data: <%= raw @report_data.values.to_json %>,
+        backgroundColor: '#6EC1E4',
+        borderColor: '#4a90e2',
+        borderWidth: 1,
+        borderRadius: 8
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true,
+          precision: 0
+        }
+      }
+    }
+  });
+</script>

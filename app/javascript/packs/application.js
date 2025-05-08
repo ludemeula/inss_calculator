@@ -1,14 +1,21 @@
-// app/javascript/packs/application.js
-
-// Importa o arquivo de CSS
 import "stylesheets/application";
 
-// Importa outras bibliotecas ou módulos, caso necessário
-// Exemplo de importação do Bootstrap
-//import "bootstrap";
-import 'bootstrap/dist/css/bootstrap.min.css';
-//import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import "bootstrap/dist/css/bootstrap.min.css";
 
+document.addEventListener("DOMContentLoaded", () => {
+  const salaryInput = document.getElementById("salary-input");
+  const inssField = document.getElementById("inss-field");
 
-// Se precisar de outros arquivos JavaScript, você pode importá-los aqui
-// import "./outro_arquivo";
+  if (salaryInput) {
+    salaryInput.addEventListener("input", () => {
+      const salary = parseFloat(salaryInput.value);
+      if (isNaN(salary)) return;
+
+      fetch(`/proponents/calculate_inss?salary=${salary}`)
+        .then((res) => res.json())
+        .then((data) => {
+          inssField.value = data.inss_discount.toFixed(2);
+        });
+    });
+  }
+});

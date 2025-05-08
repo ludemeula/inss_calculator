@@ -1,8 +1,10 @@
 <h1 class="mb-4 text-center">Proponentes</h1>
 
-<%=
-  link_to 'Novo proponente', new_proponent_path, class: 'btn btn-primary mb-3'
-%>
+<div class="d-flex justify-content-between mb-3">
+  <%= link_to "Novo Proponente", new_proponent_path, class: "btn btn-primary" %>
+  <%= link_to "📊 Relatório Salarial", salary_report_proponents_path, class: "btn btn-outline-secondary" %>
+</div>
+
 
 <div class="table-responsive">
   <table class="table table-bordered table-striped">
