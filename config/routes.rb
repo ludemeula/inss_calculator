@@ -13,10 +13,13 @@ Rails.application.routes.draw do
   # root "posts#index"
   get "calculate_inss", to: "proponents#calculate_inss"
 
-  # no controller:
-  def calculate_inss
-    salary = params[:salary].to_f
-    discount = InssCalculator.calculate(salary)
-    render json: { discount: discount }
-  end
+  resources :proponents
+
+  root "proponents#index"
+  # # no controller:
+  # def calculate_inss
+  #   salary = params[:salary].to_f
+  #   discount = InssCalculator.calculate(salary)
+  #   render json: { discount: discount }
+  # end
 end
