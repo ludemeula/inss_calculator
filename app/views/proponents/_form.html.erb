@@ -1,0 +1,26 @@
+<%= form_with model: proponent, local: true, class: "needs-validation" do |form| %>
+  <div class="mb-3">
+    <%= form.label :name, "Nome", class: "form-label" %>
+    <%= form.text_field :name, class: "form-control", required: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :documents, "Documento", class: "form-label" %>
+    <%= form.text_field :documents, class: "form-control", required: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :salary, "Salário", class: "form-label" %>
+    <%= form.number_field :salary, class: "form-control", step: 0.01, required: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :inss_discount, "Desconto INSS", class: "form-label" %>
+    <%= form.number_field :inss_discount, class: "form-control", step: 0.01, required: true %>
+  </div>
+
+  <div class="d-flex justify-content-between">
+    <%= link_to "Cancelar", proponent.persisted? ? proponent_path(proponent) : proponents_path, class: "btn btn-secondary" %>
+    <%= form.submit proponent.persisted? ? "Atualizar" : "Salvar", class: "btn btn-#{proponent.persisted? ? 'warning' : 'primary'}" %>
+  </div>
+<% end %>

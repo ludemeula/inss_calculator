@@ -22,19 +22,24 @@ class ProponentsController < ApplicationController
     end
   end
 
-  def show; end
+  def show
+    @proponent = Proponent.find(params[:id])
+  end
+  
 
-  def edit; end
-
+  def edit
+    @proponent = Proponent.find(params[:id])
+  end
+  
   def update
-    @proponent.inss_discount = InssCalculator.calculate(proponent_params[:salary].to_f)
-
+    @proponent = Proponent.find(params[:id])
     if @proponent.update(proponent_params)
-      redirect_to proponents_path, notice: "Proponente atualizado com sucesso!"
+      redirect_to @proponent, notice: "Proponente atualizado com sucesso."
     else
       render :edit
     end
   end
+  
 
   def destroy
     @proponent.destroy
