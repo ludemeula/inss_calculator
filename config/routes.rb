@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
-  #get "calculate_inss", to: "proponents#calculate_inss"
+  # get "calculate_inss", to: "proponents#calculate_inss"
 
   resources :proponents do
     collection do

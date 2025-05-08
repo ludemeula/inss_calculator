@@ -10,28 +10,49 @@
   </div>
 
   <div class="mb-3">
-  <%= form.label :salary, "Salário (R$)", class: "form-label" %>
-  <%= form.number_field :salary, step: 0.01, class: "form-control", id: "salary-input" %>
-</div>
+    <%= form.label :salary, 'Salário (R$)', class: 'form-label' %>
+    <%=
+      form.number_field :salary,
+                        step: 0.01,
+                        class: 'form-control',
+                        id: 'salary-input'
+    %>
+  </div>
 
-<div class="mb-3">
-  <%= form.label :inss_discount, "Desconto INSS (R$)", class: "form-label" %>
-  <%= form.text_field :inss_discount, class: "form-control", readonly: true, id: "inss-field" %>
-</div>
+  <%= form.fields_for :addresses do |address_fields| %>
+    <div class="mb-3">
+      <%= address_fields.label :street, 'Logradouro' %>
+      <%= address_fields.text_field :street, class: 'form-control' %>
+    </div>
 
+    <div class="mb-3">
+      <%= address_fields.label :number, 'Número' %>
+      <%= address_fields.text_field :number, class: 'form-control' %>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= form.label :inss_discount, 'Desconto INSS (R$)', class: 'form-label' %>
+    <%=
+      form.text_field :inss_discount,
+                      class: 'form-control',
+                      readonly: true,
+                      id: 'inss-field'
+    %>
+  </div>
 
   <div class="d-flex justify-content-between">
     <%=
       link_to(
         'Cancelar',
         proponent.persisted? ? proponent_path(proponent) : proponents_path,
-        class: 'btn btn-secondary'
+        class: 'btn btn-secondary',
       )
     %>
     <%=
       form.submit(
         proponent.persisted? ? 'Atualizar' : 'Salvar',
-        class: "btn btn-#{proponent.persisted? ? 'warning' : 'primary'}"
+        class: "btn btn-#{proponent.persisted? ? 'warning' : 'primary'}",
       )
     %>
   </div>

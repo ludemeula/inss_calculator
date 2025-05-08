@@ -7,8 +7,8 @@ class ProponentsController < ApplicationController
 
   def new
     @proponent = Proponent.new
-    # @proponent.addresses.build
-    # @proponent.contacts.build
+    @proponent.addresses.build
+    # 2.times { @proponent.contacts.build }
   end
 
   def create
@@ -75,7 +75,7 @@ class ProponentsController < ApplicationController
     params.require(:proponent).permit(
       :name, :documents, :birth_date, :salary,
       addresses_attributes: [ :id, :street, :number, :neighborhood, :city, :state, :zip_code, :_destroy ],
-      contacts_attributes: [ :id, :contact_type, :value, :_destroy ]
+      # contacts_attributes: [ :id, :contact_type, :value, :_destroy ]
     )
   end
 end

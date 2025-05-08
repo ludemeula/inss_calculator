@@ -28,11 +28,11 @@ end
       zip_code: Faker::Address.zip_code
     )
 
-    # rand(1..2).times do
-    #   contact_type = Contact.contact_types.keys.sample # Isto retorna um tipo de contato como string (e.g. "celular")
-    #   proponent.contacts.create!(
-    #     contact_type: contact_type,  # Passando a chave como string diretamente
-    #     value: Faker::PhoneNumber.cell_phone_in_e164
-    #   )
-    # end
+    rand(1..2).times do
+      contact_type = Contact.contact_types.keys.sample # Isto retorna um tipo de contato como string (e.g. "celular")
+      proponent.contacts.create!(
+        contact_type: contact_type,  # Passando a chave como string diretamente
+        value: Faker::PhoneNumber.cell_phone_in_e164
+      )
+    end
   end
