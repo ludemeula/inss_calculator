@@ -25,12 +25,12 @@ class ProponentsController < ApplicationController
   def show
     @proponent = Proponent.find(params[:id])
   end
-  
+
 
   def edit
     @proponent = Proponent.find(params[:id])
   end
-  
+
   def update
     @proponent = Proponent.find(params[:id])
     if @proponent.update(proponent_params)
@@ -39,7 +39,7 @@ class ProponentsController < ApplicationController
       render :edit
     end
   end
-  
+
 
   def destroy
     @proponent.destroy
@@ -61,8 +61,8 @@ class ProponentsController < ApplicationController
   def proponent_params
     params.require(:proponent).permit(
       :name, :documents, :birth_date, :salary,
-      addresses_attributes: [:id, :street, :number, :neighborhood, :city, :state, :zip_code, :_destroy],
-      contacts_attributes: [:id, :contact_type, :value, :_destroy]
+      addresses_attributes: [ :id, :street, :number, :neighborhood, :city, :state, :zip_code, :_destroy ],
+      contacts_attributes: [ :id, :contact_type, :value, :_destroy ]
     )
   end
 end

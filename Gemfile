@@ -34,11 +34,11 @@ gem "thruster", require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
-gem 'kaminari'
+gem "kaminari"
 
-##gem 'bootstrap', '~> 5.0'
-##gem 'sassc-rails'
-gem 'webpacker', '~> 5.0' # Ou versão compatível
+# #gem 'bootstrap', '~> 5.0'
+# #gem 'sassc-rails'
+gem "webpacker", "~> 5.0" # Ou versão compatível
 
 
 group :development, :test do
