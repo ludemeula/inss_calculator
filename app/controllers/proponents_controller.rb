@@ -7,8 +7,8 @@ class ProponentsController < ApplicationController
 
   def new
     @proponent = Proponent.new
-    @proponent.addresses.build
-    @proponent.contacts.build
+    # @proponent.addresses.build
+    # @proponent.contacts.build
   end
 
   def create
