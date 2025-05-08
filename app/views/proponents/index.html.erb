@@ -1,6 +1,8 @@
 <h1 class="mb-4 text-center">Proponentes</h1>
 
-<%= link_to "Novo proponente", new_proponent_path, class: "btn btn-primary mb-3" %>
+<%=
+  link_to 'Novo proponente', new_proponent_path, class: 'btn btn-primary mb-3'
+%>
 
 <div class="table-responsive">
   <table class="table table-bordered table-striped">
@@ -18,11 +20,19 @@
         <tr>
           <td><%= p.name %></td>
           <td><%= p.documents %></td>
-          <td><%= number_to_currency(p.salary, unit: "R$ ") %></td>
-          <td><%= number_to_currency(p.inss_discount, unit: "R$ ") %></td>
+          <td><%= number_to_currency(p.salary, unit: 'R$ ') %></td>
+          <td><%= number_to_currency(p.inss_discount, unit: 'R$ ') %></td>
           <td>
-            <%= link_to "Ver", proponent_path(p), class: "btn btn-sm btn-outline-primary" %>
-            <%= link_to "Editar", edit_proponent_path(p), class: "btn btn-sm btn-outline-warning" %>
+            <%=
+              link_to 'Ver',
+                      proponent_path(p),
+                      class: 'btn btn-sm btn-outline-primary'
+            %>
+            <%=
+              link_to 'Editar',
+                      edit_proponent_path(p),
+                      class: 'btn btn-sm btn-outline-warning'
+            %>
           </td>
         </tr>
       <% end %>

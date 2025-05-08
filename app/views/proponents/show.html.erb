@@ -1,19 +1,40 @@
 <h1 class="mb-4 text-center">Detalhes do Proponente</h1>
 
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title"><%= @proponent.name %></h5>
-        <p class="card-text"><strong>Documento:</strong> <%= @proponent.documents %></p>
-        <p class="card-text"><strong>Salário:</strong> <%= number_to_currency(@proponent.salary, unit: "R$ ") %></p>
-        <p class="card-text"><strong>Desconto INSS:</strong> <%= number_to_currency(@proponent.inss_discount, unit: "R$ ") %></p>
-      </div>
-    </div>
-    
-    <div class="mt-4 d-flex justify-content-between">
-      <%= link_to "Voltar", proponents_path, class: "btn btn-secondary" %>
-      <div>
-        <%= link_to "Editar", edit_proponent_path(@proponent), class: "btn btn-warning me-2" %>
-        <%= link_to "Excluir", proponent_path(@proponent), method: :delete, data: { confirm: "Tem certeza que deseja excluir este proponente?" }, class: "btn btn-danger" %>
-      </div>
-    </div>
-    
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title"><%= @proponent.name %></h5>
+    <p class="card-text">
+      <strong>Documento:</strong> <%= @proponent.documents %>
+    </p>
+    <p class="card-text">
+      <strong>Salário:</strong> <%=
+        number_to_currency(@proponent.salary, unit: 'R$ ')
+      %>
+    </p>
+    <p class="card-text">
+      <strong>Desconto INSS:</strong> <%=
+        number_to_currency(@proponent.inss_discount, unit: 'R$ ')
+      %>
+    </p>
+  </div>
+</div>
+
+<div class="mt-4 d-flex justify-content-between">
+  <%= link_to 'Voltar', proponents_path, class: 'btn btn-secondary' %>
+  <div>
+    <%=
+      link_to 'Editar',
+              edit_proponent_path(@proponent),
+              class: 'btn btn-warning me-2'
+    %>
+    <%=
+      link_to 'Excluir',
+              proponent_path(@proponent),
+              method: :delete,
+              data: {
+                confirm: 'Tem certeza que deseja excluir este proponente?',
+              },
+              class: 'btn btn-danger'
+    %>
+  </div>
+</div>
