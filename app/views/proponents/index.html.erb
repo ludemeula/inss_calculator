@@ -1,10 +1,13 @@
 <h1 class="mb-4 text-center">Proponentes</h1>
 
 <div class="d-flex justify-content-between mb-3">
-  <%= link_to "Novo Proponente", new_proponent_path, class: "btn btn-primary" %>
-  <%= link_to "📊 Relatório Salarial", salary_report_proponents_path, class: "btn btn-outline-secondary" %>
+  <%= link_to 'Novo Proponente', new_proponent_path, class: 'btn btn-primary' %>
+  <%=
+    link_to '📊 Relatório Salarial',
+            salary_report_proponents_path,
+            class: 'btn btn-outline-secondary'
+  %>
 </div>
-
 
 <div class="table-responsive">
   <table class="table table-bordered table-striped">
@@ -17,28 +20,32 @@
         <th>Ações</th>
       </tr>
     </thead>
-    <tbody>
-      <% @proponents.each do |p| %>
+    <% if @proponents.any? %>
+      <tbody>
+        <% @proponents.each do |p| %>
+          <tr>
+            <td><%= p.name %></td>
+            <td><%= p.documents %></td>
+            <td><%= number_to_currency(p.salary, unit: 'R$ ') %></td>
+            <td><%= number_to_currency(p.inss_discount, unit: 'R$ ') %></td>
+            <td class="text-center">
+              <%= link_to 'Ver', proponent_path(p), class: 'btn btn-sm btn-outline-primary' %>
+              <%= link_to 'Editar', edit_proponent_path(p), class: 'btn btn-sm btn-outline-warning' %>
+              <%= link_to 'Excluir', proponent_path(p),
+                          method: :delete,
+                          data: { confirm: 'Tem certeza que deseja excluir este proponente?' },
+                          class: 'btn btn-sm btn-outline-danger' %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    <% else %>
+      <tbody>
         <tr>
-          <td><%= p.name %></td>
-          <td><%= p.documents %></td>
-          <td><%= number_to_currency(p.salary, unit: 'R$ ') %></td>
-          <td><%= number_to_currency(p.inss_discount, unit: 'R$ ') %></td>
-          <td>
-            <%=
-              link_to 'Ver',
-                      proponent_path(p),
-                      class: 'btn btn-sm btn-outline-primary'
-            %>
-            <%=
-              link_to 'Editar',
-                      edit_proponent_path(p),
-                      class: 'btn btn-sm btn-outline-warning'
-            %>
-          </td>
+          <td colspan="5" class="text-center">Nenhum proponente encontrado.</td>
         </tr>
-      <% end %>
-    </tbody>
+      </tbody>
+    <% end %>
   </table>
 </div>
 

@@ -1,3 +1,5 @@
+//= require rails-ujs
+
 import "stylesheets/application";
 
 import "bootstrap/dist/css/bootstrap.min.css";

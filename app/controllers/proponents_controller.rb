@@ -8,7 +8,7 @@ class ProponentsController < ApplicationController
   def new
     @proponent = Proponent.new
     @proponent.addresses.build
-    # 2.times { @proponent.contacts.build }
+    @proponent.contacts.build
   end
 
   def create
@@ -26,7 +26,6 @@ class ProponentsController < ApplicationController
     @proponent = Proponent.find(params[:id])
   end
 
-
   def edit
     @proponent = Proponent.find(params[:id])
   end
@@ -40,7 +39,6 @@ class ProponentsController < ApplicationController
     end
   end
 
-
   def destroy
     @proponent.destroy
     redirect_to proponents_path, notice: "Proponente removido com sucesso!"
@@ -48,21 +46,47 @@ class ProponentsController < ApplicationController
 
   def salary_report
     @ranges = {
-      "Até R$ 2.000" => 0...2000,
+      "At\u00E9 R$ 2.000" => 0...2000,
       "R$ 2.000 - R$ 5.000" => 2000...5000,
       "R$ 5.000 - R$ 10.000" => 5000...10_000,
       "Acima de R$ 10.000" => 10_000..Float::INFINITY
     }
 
-    @report_data = @ranges.transform_values do |range|
-      Proponent.where(salary: range).count
-    end
+    @report_data =
+      @ranges.transform_values { |range| Proponent.where(salary: range).count }
   end
 
   def calculate_inss
     salary = params[:salary].to_f
     discount = InssCalculator.calculate(salary)
     render json: { inss_discount: discount }
+  end
+
+  def new_contact
+    @proponent = Proponent.find(params[:proponent_id])
+    @contact = @proponent.contacts.build
+  end
+  
+  def create_contact
+    @proponent = Proponent.find(params[:proponent_id])
+    @contact = @proponent.contacts.build(contact_params)
+  
+    if @contact.save
+      redirect_to edit_proponent_path(@proponent), notice: 'Contato adicionado com sucesso.'
+    else
+      render :new_contact
+    end
+  end
+  
+  def destroy_contact
+    @proponent = Proponent.find(params[:proponent_id])
+    @contact = @proponent.contacts.find(params[:id])
+
+    if @contact.destroy
+      redirect_to edit_proponent_path(@proponent), notice: 'Contato removido com sucesso.'
+    else
+      redirect_to edit_proponent_path(@proponent), alert: 'Não foi possível remover o contato.'
+    end
   end
 
   private
@@ -72,10 +96,16 @@ class ProponentsController < ApplicationController
   end
 
   def proponent_params
-    params.require(:proponent).permit(
-      :name, :documents, :birth_date, :salary,
-      addresses_attributes: [ :id, :street, :number, :neighborhood, :city, :state, :zip_code, :_destroy ],
-      # contacts_attributes: [ :id, :contact_type, :value, :_destroy ]
-    )
+    params
+      .require(:proponent)
+      .permit(
+        :name,
+        :documents,
+        :birth_date,
+        :salary,
+        :inss_discount,
+        addresses_attributes: %i[ id street number neighborhood city state zip_code _destroy  ],
+        contacts_attributes: %i[id contact_type value _destroy],
+      )
   end
 end

@@ -8,6 +8,8 @@ Rails.application.routes.draw do
       get :salary_report
       get :calculate_inss
     end
+
+    resources :contacts, only: [:destroy]
   end
 
   root "proponents#index"
