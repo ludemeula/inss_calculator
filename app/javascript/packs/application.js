@@ -1,8 +1,9 @@
-import Rails from '@rails/ujs';
+import Rails from "@rails/ujs";
 Rails.start();
 
 import "stylesheets/application";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./flash";
 
 document.addEventListener("DOMContentLoaded", () => {
   const salaryInput = document.getElementById("salary-input");
@@ -24,10 +25,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // document.getElementById('add-contact').addEventListener('click', function() {
   //   contactCount++;
-    
+
   //   // Clone the first contact block
   //   const contactRow = document.querySelector('.row.g-2').cloneNode(true);
-    
+
   //   // Reset the input fields to empty
   //   contactRow.querySelectorAll('input').forEach(input => {
   //     input.value = '';
