@@ -36,3 +36,28 @@ end
       )
     end
   end
+
+# Criando um usuário de exemplo
+User.create!(
+  name: 'João Silva',
+  email: 'joao.silva@example.com',
+  password: 'senha123',
+  password_confirmation: 'senha123'
+)
+
+User.create!(
+  name: 'Maria Oliveira',
+  email: 'maria.oliveira@example.com',
+  password: 'senha456',
+  password_confirmation: 'senha456'
+)
+
+User.create!(
+  name: 'Carlos Pereira',
+  email: 'carlos.pereira@example.com',
+  password: 'senha789',
+  password_confirmation: 'senha789'
+)
+
+puts "Usuários criados com sucesso!"
+
