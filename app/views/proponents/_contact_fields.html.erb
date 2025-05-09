@@ -1,0 +1,15 @@
+<div class="contact-fields mb-3">
+  <div class="row g-2">
+    <div class="col-md-4">
+      <%= f.label :contact_type, 'Tipo' %>
+      <%= f.select :contact_type, ['Celular', 'WhatsApp', 'Email'], {}, class: 'form-select' %>
+    </div>
+    <div class="col-md-6">
+      <%= f.label :value, 'Contato' %>
+      <%= f.text_field :value, class: 'form-control' %>
+    </div>
+    <div class="col-md-2 d-flex align-items-end">
+      <button type="button" class="btn btn-danger remove-contact">Remover</button>
+    </div>
+  </div>
+</div>

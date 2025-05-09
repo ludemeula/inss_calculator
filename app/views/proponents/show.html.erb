@@ -4,7 +4,8 @@
     <div class="card-body">
       <h5 class="card-title text-primary mb-3"><%= @proponent.name %></h5>
   
-      <p class="card-text"><strong>CPF:</strong> <%= @proponent.documents %></p>
+      <p class="card-text"><strong>CPF:</strong> <%= format_cpf(@proponent.cpf) %></p>
+      <p class="card-text"><strong>RG:</strong> <%= @proponent.rg %></p>
       <p class="card-text"><strong>Data de Nascimento:</strong> <%= l(@proponent.birth_date, format: :default) %></p>
       <p class="card-text"><strong>Salário:</strong> <%= number_to_currency(@proponent.salary, unit: 'R$ ') %></p>
       <p class="card-text"><strong>Desconto INSS:</strong> <%= number_to_currency(@proponent.inss_discount, unit: 'R$ ') %></p>

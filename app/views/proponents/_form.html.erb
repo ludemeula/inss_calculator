@@ -31,35 +31,16 @@
     </div>
   <% end %>
 
-  
-  <%= form.fields_for :contacts do |contact_fields| %>
-    <% proponent.contacts.each_with_index do |contact, index| %>
-      <div class="row g-2">
-        <div class="col-md-4">
-          <%= contact_fields.label :contact_type, 'Tipo' %>
-          <%= contact_fields.select :contact_type,
-                                    [
-                                      'Telefone Residencial',
-                                      'Celular',
-                                      'WhatsApp',
-                                      'Email',
-                                    ],
-                                    { selected: contact.contact_type },
-                                    class: 'form-select'
-          %>
-        </div>
-        <div class="col-md-6">
-          <%= contact_fields.label :value, 'Contato' %>
-          <%= contact_fields.text_field :value, value: contact.value, class: 'form-control' %>
-        </div>
-        <div class="col-md-2">
-           <%= link_to 'Remover', proponent_contact_path(contact), method: :delete, class: 'btn btn-danger' %>
-        </div>
-      </div>
+  <h5>Contatos</h5>
+  <div id="contacts-wrapper">
+    <!-- Contatos existentes -->
+    <%= form.fields_for :contacts do |contact_fields| %>
+      <%= render 'contact_fields', f: contact_fields %>
     <% end %>
-  <% end %>
+  </div>
 
-  <%= link_to 'Adicionar Contato', new_contact_proponent_path(proponent), class: 'btn btn-primary' %>
+  <button type="button" id="add-contact" class="btn btn-outline-primary mb-3">Adicionar Contato</button>
+
 
   <div class="mb-3">
     <%= form.label :inss_discount, 'Desconto INSS (R$)', class: 'form-label' %>
@@ -87,3 +68,46 @@
     %>
   </div>
 <% end %>
+
+<!-- Template oculto para novos contatos -->
+<template id="contact-template">
+  <div class="contact-fields mb-3">
+    <div class="row g-2">
+      <div class="col-md-4">
+        <label for="">Tipo</label>
+        <select name="proponent[contacts_attributes][INDEX][contact_type]" class="form-select">
+          <option>Celular</option>
+          <option>WhatsApp</option>
+          <option>Email</option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label for="">Contato</label>
+        <input type="text" name="proponent[contacts_attributes][INDEX][value]" class="form-control" />
+      </div>
+      <div class="col-md-2 d-flex align-items-end">
+        <button type="button" class="btn btn-danger remove-contact">Remover</button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const wrapper = document.getElementById("contacts-wrapper");
+    const template = document.getElementById("contact-template").innerHTML;
+    let index = document.querySelectorAll(".contact-fields").length;
+
+    document.getElementById("add-contact").addEventListener("click", () => {
+      const newField = template.replace(/INDEX/g, index);
+      wrapper.insertAdjacentHTML("beforeend", newField);
+      index++;
+    });
+
+    wrapper.addEventListener("click", (e) => {
+      if (e.target.classList.contains("remove-contact")) {
+        e.target.closest(".contact-fields").remove();
+      }
+    });
+  });
+</script>

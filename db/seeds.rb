@@ -3,17 +3,18 @@ def gerar_cpf
   soma1 = n.each_with_index.map { |num, i| num * (10 - i) }.sum
   d1 = soma1 % 11 < 2 ? 0 : 11 - soma1 % 11
 
-  soma2 = (n + [d1]).each_with_index.map { |num, i| num * (11 - i) }.sum
+  soma2 = (n + [ d1 ]).each_with_index.map { |num, i| num * (11 - i) }.sum
   d2 = soma2 % 11 < 2 ? 0 : 11 - soma2 % 11
 
-  (n + [d1, d2]).join
+  (n + [ d1, d2 ]).join
 end
 
 10.times do
   proponent =
     Proponent.create!(
       name: Faker::Name.name,
-      documents: gerar_cpf,
+      cpf: gerar_cpf,
+      rg: Faker::Number.number(digits: 8),
       birth_date: Faker::Date.birthday(min_age: 18, max_age: 65),
       salary: rand(1000.0..8000.0).round(2),
     )
@@ -31,7 +32,7 @@ end
   rand(1..2).times do
     contact_type = Contact.contact_types.keys.sample # Isto retorna um tipo de contato como string (e.g. "celular")
     proponent.contacts.create!(
-      contact_type: contact_type, 
+      contact_type: contact_type,
       value: Faker::PhoneNumber.unique.phone_number.gsub(/\d{2}(\d{4,5})(\d{4})/, '(\\1) \\2-\\3'),
     )
   end

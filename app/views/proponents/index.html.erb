@@ -14,7 +14,7 @@
     <thead class="table-light">
       <tr>
         <th>Nome</th>
-        <th>Documento</th>
+        <th>CPF</th>
         <th>Salário</th>
         <th>Desconto INSS</th>
         <th>Ações</th>
@@ -25,7 +25,7 @@
         <% @proponents.each do |p| %>
           <tr>
             <td><%= p.name %></td>
-            <td><%= p.documents %></td>
+            <td><%= format_cpf(p.cpf) %></td>
             <td><%= number_to_currency(p.salary, unit: 'R$ ') %></td>
             <td><%= number_to_currency(p.inss_discount, unit: 'R$ ') %></td>
             <td class="text-center">
@@ -49,4 +49,4 @@
   </table>
 </div>
 
-<%= paginate @proponents, class: 'pagination justify-content-center' %>
+<%= paginate @proponents %>
