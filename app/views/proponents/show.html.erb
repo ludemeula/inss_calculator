@@ -1,40 +1,75 @@
 <h1 class="mb-4 text-center">Detalhes do Proponente</h1>
 
-<div class="card">
-  <div class="card-body">
-    <h5 class="card-title"><%= @proponent.name %></h5>
-    <p class="card-text">
-      <strong>Documento:</strong> <%= @proponent.documents %>
-    </p>
-    <p class="card-text">
-      <strong>Salário:</strong> <%=
-        number_to_currency(@proponent.salary, unit: 'R$ ')
-      %>
-    </p>
-    <p class="card-text">
-      <strong>Desconto INSS:</strong> <%=
-        number_to_currency(@proponent.inss_discount, unit: 'R$ ')
-      %>
-    </p>
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title text-primary mb-3"><%= @proponent.name %></h5>
+  
+      <p class="card-text"><strong>CPF:</strong> <%= @proponent.documents %></p>
+      <p class="card-text"><strong>Data de Nascimento:</strong> <%= l(@proponent.birth_date, format: :default) %></p>
+      <p class="card-text"><strong>Salário:</strong> <%= number_to_currency(@proponent.salary, unit: 'R$ ') %></p>
+      <p class="card-text"><strong>Desconto INSS:</strong> <%= number_to_currency(@proponent.inss_discount, unit: 'R$ ') %></p>
+  
+      <hr>
+  
+      <%# 📞 Contatos (vários registros) %>
+      <div class="border rounded p-3 mt-4 bg-light">
+        <h6 class="text-muted mb-3">📞 Contatos</h6>
+  
+        <% if @proponent.contacts.any? %>
+          <ul>
+            <% @proponent.contacts.each do |contact| %>
+              <li>
+                <strong><%= contact.contact_type.capitalize %>:</strong>
+                <%=
+                  contact.phone_type? ?
+                  format_phone(contact.value) :
+                  contact.value
+                %>
+              </li>
+            <% end %>
+          </ul>
+        <% else %>
+          <p>Sem contatos cadastrados.</p>
+        <% end %>
+      </div>
+  
+      <%# 📍 Endereços (vários registros) %>
+      <div class="border rounded p-3 mt-4 bg-light">
+        <h6 class="text-muted mb-3">📍 Endereços</h6>
+  
+        <% if @proponent.addresses.any? %>
+          <% @proponent.addresses.each_with_index do |address, index| %>
+            <p><strong>Endereço <%= index + 1 %>:</strong></p>
+            <ul>
+              <li><strong>Rua:</strong> <%= address.street %></li>
+              <li><strong>Número:</strong> <%= address.number %></li>
+              <li><strong>Bairro:</strong> <%= address.neighborhood %></li>
+              <li><strong>Cidade:</strong> <%= address.city %></li>
+              <li><strong>Estado:</strong> <%= address.state %></li>
+              <li><strong>CEP:</strong> <%= address.zip_code %></li>
+            </ul>
+          <% end %>
+        <% else %>
+          <p>Nenhum endereço cadastrado.</p>
+        <% end %>
+      </div>
+  
+      <hr>
+  
+      <p class="card-text text-muted mt-3">
+        <strong>Cadastro em:</strong> <%= l(@proponent.created_at, format: :long) %>
+      </p>
+    </div>
   </div>
-</div>
-
-<div class="mt-4 d-flex justify-content-between">
-  <%= link_to 'Voltar', proponents_path, class: 'btn btn-secondary' %>
-  <div>
-  <%=
-  link_to 'Editar',
-          edit_proponent_path(@proponent),
-          class: 'btn btn-warning me-2'
-%>
-<%=
-  link_to 'Excluir',
-          proponent_path(@proponent),
-          method: :delete,
-          data: {
-            confirm: 'Tem certeza que deseja excluir este proponente?',
-          },
-          class: 'btn btn-danger'
-%>
+  
+  <div class="mt-4 d-flex justify-content-between align-items-center">
+    <%= link_to 'Voltar', proponents_path, class: 'btn btn-outline-secondary' %>
+    <div>
+      <%= link_to 'Editar', edit_proponent_path(@proponent), class: 'btn btn-outline-warning me-2' %>
+      <%= link_to 'Excluir', proponent_path(@proponent),
+                  method: :delete,
+                  data: { confirm: 'Tem certeza que deseja excluir este proponente?' },
+                  class: 'btn btn-outline-danger' %>
+    </div>
   </div>
-</div>
+  
