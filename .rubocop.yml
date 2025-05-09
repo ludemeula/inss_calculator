@@ -23,8 +23,11 @@ Style/FrozenStringLiteralComment:
 Style/StringLiterals:
   EnforcedStyle: single_quotes
 
-Metrics/MethodLength:
-  Max: 15
-
 Metrics/ClassLength:
   Max: 100
+
+Layout/IndentationStyle:
+  EnforcedStyle: spaces
+
+Layout/IndentationWidth:
+  Width: 2

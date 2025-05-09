@@ -1,23 +1,13 @@
 class ApplicationController < ActionController::Base
-  # allow_browser versions: :modern
-  # Desabilitar a verificação de CSRF para APIs
-  protect_from_forgery with: :null_session
+  protect_from_forgery with: :exception
 
-  def decode_token(token)
-    JWT.decode(token, 'secreta', true, algorithm: 'HS256')[0]
-  rescue JWT::DecodeError
-    nil
-  end
+  helper_method :current_user
 
-  # Método para obter o usuário a partir do token
   def current_user
-    if decoded_token = decode_token(request.headers['Authorization'].split(' ').last)
-      @current_user ||= User.find_by(id: decoded_token['user_id'])
-    end
+    @current_user ||= User.find_by(id: session[:user_id])
   end
 
-  # Verifica se o usuário está autenticado
-  def authenticate_user!
-    render json: { error: 'Unauthorized' }, status: :unauthorized unless current_user
+  def require_login
+    redirect_to login_path unless current_user
   end
 end

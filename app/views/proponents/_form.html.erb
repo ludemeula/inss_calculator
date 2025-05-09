@@ -5,8 +5,8 @@
   </div>
 
   <div class="mb-3">
-    <%= form.label :documents, 'Documento', class: 'form-label' %>
-    <%= form.text_field :documents, class: 'form-control', required: true %>
+    <%= form.label :cpf, 'CPF', class: 'form-label' %>
+    <%= form.text_field :cpf, class: 'form-control', required: true %>
   </div>
 
   <div class="mb-3">
@@ -76,9 +76,9 @@
       <div class="col-md-4">
         <label for="">Tipo</label>
         <select name="proponent[contacts_attributes][INDEX][contact_type]" class="form-select">
-          <option>Celular</option>
-          <option>WhatsApp</option>
-          <option>Email</option>
+          <option>celular</option>
+          <option>whatsapp</option>
+          <option>email</option>
         </select>
       </div>
       <div class="col-md-6">

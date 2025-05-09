@@ -1,0 +1,26 @@
+<!-- app/views/sessions/new.html.erb -->
+<div class="d-flex justify-content-center align-items-center vh-100 bg-light">
+  <div class="card shadow p-4" style="min-width: 350px; max-width: 400px;">
+    <h3 class="text-center mb-4">Login</h3>
+
+    <%= form_with url: login_path, local: true do |form| %>
+      <div class="mb-3">
+        <%= form.label :email, class: "form-label" %>
+        <%= form.email_field :email, class: "form-control", placeholder: "seu@email.com", required: true %>
+      </div>
+
+      <div class="mb-3">
+        <%= form.label :password, class: "form-label" %>
+        <%= form.password_field :password, class: "form-control", placeholder: "********", required: true %>
+      </div>
+
+      <div class="d-grid">
+        <%= form.submit "Entrar", class: "btn btn-primary" %>
+      </div>
+    <% end %>
+
+    <% if flash[:alert] %>
+      <div class="alert alert-danger mt-3 text-center"><%= flash[:alert] %></div>
+    <% end %>
+  </div>
+</div>
