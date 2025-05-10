@@ -26,6 +26,7 @@ class ProponentsController < ApplicationController
         format.html { redirect_to proponents_path, notice: 'Proponente criado com sucesso!' }
         format.json { render json: @proponent, status: :created }
       else
+        puts @proponent.errors.full_messages
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @proponent.errors, status: :unprocessable_entity }
       end
@@ -106,7 +107,8 @@ class ProponentsController < ApplicationController
   def proponent_params
     params.require(:proponent).permit(
       :name,
-      :documents,
+      :cpf,
+      :rg,
       :birth_date,
       :salary,
       :inss_discount,
