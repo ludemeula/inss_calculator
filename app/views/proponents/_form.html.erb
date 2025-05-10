@@ -1,56 +1,122 @@
 <%= form_with model: proponent, local: true, class: "needs-validation" do |form| %>
-  <div class="mb-3">
-    <%= form.label :name, 'Nome', class: 'form-label' %>
-    <%= form.text_field :name, class: 'form-control', required: true %>
-  </div>
+  <fieldset class="border p-3 rounded mb-4">
+    <legend class="float-none w-auto px-2">Informações Pessoais</legend>
 
-  <div class="mb-3">
-    <%= form.label :cpf, 'CPF', class: 'form-label' %>
-    <%= form.text_field :cpf, class: 'form-control', required: true %>
-  </div>
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <%= form.label :name, 'Nome', class: 'form-label' %>
+        <%= form.text_field :name, class: 'form-control', required: true %>
+      </div>
 
-  <div class="mb-3">
-    <%= form.label :salary, 'Salário (R$)', class: 'form-label' %>
-    <%=
-      form.number_field :salary,
-                        step: 0.01,
-                        class: 'form-control',
-                        id: 'salary-input'
-    %>
-  </div>
+      <div class="col-md-3">
+        <%= form.label :cpf, 'CPF', class: 'form-label' %>
+        <%= form.text_field :cpf, class: 'form-control', required: true %>
+      </div>
+
+      <div class="col-md-3">
+        <%= form.label :rg, 'RG', class: 'form-label' %>
+        <%= form.text_field :rg, class: 'form-control', required: true %>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-4">
+        <%= form.label :birth_date, 'Data de Nascimento' %>
+        <%= form.date_field :birth_date, class: 'form-control' %>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset class="border p-3 rounded mb-4">
+    <legend class="float-none w-auto px-2">Dados Financeiros</legend>
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <%= form.label :salary, 'Salário (R$)', class: 'form-label' %>
+        <%= form.number_field :salary, step: 0.01, class: 'form-control', id: 'salary-input' %>
+      </div>
+
+      <div class="col-md-6">
+        <%= form.label :inss_discount, 'Desconto INSS (R$)', class: 'form-label' %>
+        <%= form.text_field :inss_discount, class: 'form-control', disabled: true, id: 'inss-field' %>
+      </div>
+    </div>
+  </fieldset>
 
   <%= form.fields_for :addresses do |address_fields| %>
-    <div class="mb-3">
+    <fieldset class="border p-3 rounded mb-4">
+  <legend class="float-none w-auto px-2">Endereço</legend>
+
+  <div class="row mb-3">
+    <div class="col-md-8">
       <%= address_fields.label :street, 'Logradouro' %>
       <%= address_fields.text_field :street, class: 'form-control' %>
     </div>
-
-    <div class="mb-3">
+    <div class="col-md-4">
       <%= address_fields.label :number, 'Número' %>
       <%= address_fields.text_field :number, class: 'form-control' %>
     </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <%= address_fields.label :neighborhood, 'Bairro' %>
+      <%= address_fields.text_field :neighborhood, class: 'form-control' %>
+    </div>
+    <div class="col-md-6">
+      <%= address_fields.label :city, 'Cidade' %>
+      <%= address_fields.text_field :city, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-md-6">
+    <%= address_fields.label :state, 'Estado' %>
+    <%= address_fields.select :state, options_for_select([
+      ['AC - Acre', 'AC'],
+      ['AL - Alagoas', 'AL'],
+      ['AP - Amapá', 'AP'],
+      ['AM - Amazonas', 'AM'],
+      ['BA - Bahia', 'BA'],
+      ['CE - Ceará', 'CE'],
+      ['DF - Distrito Federal', 'DF'],
+      ['ES - Espírito Santo', 'ES'],
+      ['GO - Goiás', 'GO'],
+      ['MA - Maranhão', 'MA'],
+      ['MT - Mato Grosso', 'MT'],
+      ['MS - Mato Grosso do Sul', 'MS'],
+      ['MG - Minas Gerais', 'MG'],
+      ['PA - Pará', 'PA'],
+      ['PB - Paraíba', 'PB'],
+      ['PR - Paraná', 'PR'],
+      ['PE - Pernambuco', 'PE'],
+      ['PI - Piauí', 'PI'],
+      ['RJ - Rio de Janeiro', 'RJ'],
+      ['RN - Rio Grande do Norte', 'RN'],
+      ['RS - Rio Grande do Sul', 'RS'],
+      ['RO - Rondônia', 'RO'],
+      ['RR - Roraima', 'RR'],
+      ['SC - Santa Catarina', 'SC'],
+      ['SP - São Paulo', 'SP'],
+      ['SE - Sergipe', 'SE'],
+      ['TO - Tocantins', 'TO']
+    ], address_fields.object.state), { prompt: 'Selecione um estado' }, class: 'form-select' %>    
+    </div>
+    <div class="col-md-6">
+      <%= address_fields.label :zip_code, 'CEP' %>
+      <%= address_fields.text_field :zip_code, class: 'form-control' %>
+    </div>
+  </div>
+</fieldset>
+
   <% end %>
 
   <h5>Contatos</h5>
-  <div id="contacts-wrapper">
-    <!-- Contatos existentes -->
-    <%= form.fields_for :contacts do |contact_fields| %>
-      <%= render 'contact_fields', f: contact_fields %>
-    <% end %>
-  </div>
+  
 
-  <button type="button" id="add-contact" class="btn btn-outline-primary mb-3">Adicionar Contato</button>
-
-
-  <div class="mb-3">
-    <%= form.label :inss_discount, 'Desconto INSS (R$)', class: 'form-label' %>
-    <%=
-      form.text_field :inss_discount,
-                      class: 'form-control',
-                      readonly: true,
-                      id: 'inss-field'
-    %>
-  </div>
+  <button type="button" id="add-contact" class="btn btn-outline-primary mb-3">
+    Adicionar Contato
+  </button>
 
   <div class="d-flex justify-content-between">
     <%=
@@ -75,7 +141,10 @@
     <div class="row g-2">
       <div class="col-md-4">
         <label for="">Tipo</label>
-        <select name="proponent[contacts_attributes][INDEX][contact_type]" class="form-select">
+        <select
+          name="proponent[contacts_attributes][INDEX][contact_type]"
+          class="form-select"
+        >
           <option>celular</option>
           <option>whatsapp</option>
           <option>email</option>
@@ -83,31 +152,17 @@
       </div>
       <div class="col-md-6">
         <label for="">Contato</label>
-        <input type="text" name="proponent[contacts_attributes][INDEX][value]" class="form-control" />
+        <input
+          type="text"
+          name="proponent[contacts_attributes][INDEX][value]"
+          class="form-control"
+        />
       </div>
       <div class="col-md-2 d-flex align-items-end">
-        <button type="button" class="btn btn-danger remove-contact">Remover</button>
+        <button type="button" class="btn btn-danger remove-contact">
+          Remover
+        </button>
       </div>
     </div>
   </div>
 </template>
-
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const wrapper = document.getElementById("contacts-wrapper");
-    const template = document.getElementById("contact-template").innerHTML;
-    let index = document.querySelectorAll(".contact-fields").length;
-
-    document.getElementById("add-contact").addEventListener("click", () => {
-      const newField = template.replace(/INDEX/g, index);
-      wrapper.insertAdjacentHTML("beforeend", newField);
-      index++;
-    });
-
-    wrapper.addEventListener("click", (e) => {
-      if (e.target.classList.contains("remove-contact")) {
-        e.target.closest(".contact-fields").remove();
-      }
-    });
-  });
-</script>
