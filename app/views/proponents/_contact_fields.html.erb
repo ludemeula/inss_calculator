@@ -1,9 +1,9 @@
 <div class="contact-fields mb-3" data-existing="<%= f.object.persisted? %>">
-  <%= f.hidden_field :_destroy, class: "destroy-flag" %>
+  <%= f.hidden_field :_destroy, class: 'destroy-flag' %>
   <div class="row g-2">
     <div class="col-md-4">
       <%= f.label :contact_type, 'Tipo' %>
-      <%= f.select :contact_type, ['celular', 'whatsapp', 'email'], {}, class: 'form-select' %>
+      <%= f.select :contact_type, %w[celular whatsapp email], {}, class: 'form-select' %>
     </div>
     <div class="col-md-6">
       <%= f.label :value, 'Contato' %>

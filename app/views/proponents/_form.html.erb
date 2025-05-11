@@ -1,7 +1,7 @@
 <%= form_with model: proponent, local: true do |form| %>
   <% if proponent.errors.any? %>
     <div class="alert alert-danger">
-      <h4><%= pluralize(proponent.errors.count, "erro") %> impediram o salvamento:</h4>
+      <h4><%= pluralize(proponent.errors.count, 'erro') %> impediram o salvamento:</h4>
       <ul>
         <% proponent.errors.full_messages.each do |msg| %>
           <li><%= msg %></li>
@@ -49,16 +49,26 @@
 
       <div class="col-md-6">
         <%= form.label :inss_discount, 'Desconto INSS (R$)', class: 'form-label' %>
-        <%= form.text_field :inss_discount, 
-        value: number_to_currency(proponent.inss_discount, unit: 'R$ ', delimiter: '.', separator: ','),
-        class: 'form-control', disabled: true, id: 'inss-field' %>
+        <%=
+          form.text_field :inss_discount,
+                          value:
+                            number_to_currency(
+                              proponent.inss_discount,
+                              unit: 'R$ ',
+                              delimiter: '.',
+                              separator: ',',
+                            ),
+                          class: 'form-control',
+                          disabled: true,
+                          id: 'inss-field'
+        %>
       </div>
     </div>
   </fieldset>
 
   <%= form.fields_for :addresses do |address_fields| %>
     <% tipo = address_fields.object.address_type %>
-  
+
     <% if tipo == 'principal' %>
       <fieldset class="border p-3 rounded mb-4">
         <legend class="float-none w-auto px-2">Endereço Principal</legend>
@@ -71,7 +81,6 @@
       </fieldset>
     <% end %>
   <% end %>
-  
 
   <fieldset class="border p-3 rounded mb-4">
     <legend class="float-none w-auto px-2">Contatos</legend>
@@ -106,7 +115,12 @@
 
 <template id="contact-template">
   <div class="contact-fields mb-3" data-existing="false">
-    <input type="hidden" name="proponent[contacts_attributes][INDEX][_destroy]" class="destroy-flag" value="false" />
+    <input
+      type="hidden"
+      name="proponent[contacts_attributes][INDEX][_destroy]"
+      class="destroy-flag"
+      value="false"
+    />
     <div class="row g-2">
       <div class="col-md-4">
         <label>Tipo</label>
@@ -118,7 +132,11 @@
       </div>
       <div class="col-md-6">
         <label>Contato</label>
-        <input type="text" name="proponent[contacts_attributes][INDEX][value]" class="form-control" />
+        <input
+          type="text"
+          name="proponent[contacts_attributes][INDEX][value]"
+          class="form-control"
+        />
       </div>
       <div class="col-md-2 d-flex align-items-end">
         <button type="button" class="btn btn-danger remove-contact">Remover</button>

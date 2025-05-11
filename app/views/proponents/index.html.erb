@@ -27,11 +27,18 @@
             <td><%= number_to_currency(p.inss_discount, unit: 'R$ ') %></td>
             <td class="text-center">
               <%= link_to 'Ver', proponent_path(p), class: 'btn btn-sm btn-outline-primary' %>
-              <%= link_to 'Editar', edit_proponent_path(p), class: 'btn btn-sm btn-outline-warning' %>
-              <%= link_to 'Excluir', proponent_path(p),
-                          method: :delete,
-                          data: { confirm: 'Tem certeza que deseja excluir este proponente?' },
-                          class: 'btn btn-sm btn-outline-danger' %>
+              <%=
+                link_to 'Editar', edit_proponent_path(p), class: 'btn btn-sm btn-outline-warning'
+              %>
+              <%=
+                link_to 'Excluir',
+                        proponent_path(p),
+                        method: :delete,
+                        data: {
+                          confirm: 'Tem certeza que deseja excluir este proponente?',
+                        },
+                        class: 'btn btn-sm btn-outline-danger'
+              %>
             </td>
           </tr>
         <% end %>
