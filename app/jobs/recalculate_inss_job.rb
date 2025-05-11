@@ -7,12 +7,11 @@ class RecalculateInssJob < ApplicationJob
     Proponent.find_each(batch_size: 100) do |proponent|
       begin
         new_discount = InssCalculator.calculate(proponent.salary)
-        proponent.update(inss_discount: new_discount) # Atualiza diretamente no banco
+        proponent.update(inss_discount: new_discount)
 
         Rails.logger.info "Desconto INSS atualizado para o proponente #{proponent.id}: R$ #{new_discount}"
 
       rescue => e
-        # Log de erro para o caso de falhas na atualização
         Rails.logger.error "Erro ao atualizar o desconto INSS para o proponente #{proponent.id}: #{e.message}"
       end
     end
