@@ -1,7 +1,7 @@
 # app/controllers/api_controller.rb
 class ApiController < ActionController::API
   def decode_token(token)
-    JWT.decode(token,  Rails.application.secret_key_base, true, algorithm: 'HS256')[0]
+    JWT.decode(token, Rails.application.secret_key_base, true, algorithm: 'HS256')[0]
   rescue JWT::DecodeError
     nil
   end
@@ -16,8 +16,6 @@ class ApiController < ActionController::API
   end
 
   def authenticate_user!
-    unless current_user
-      render json: { error: 'Unauthorized' }, status: :unauthorized
-    end
+    render json: { error: 'Unauthorized' }, status: :unauthorized unless current_user
   end
 end
