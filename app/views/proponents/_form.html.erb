@@ -73,14 +73,19 @@
   <% end %>
   
 
+  <fieldset class="border p-3 rounded mb-4">
+    <legend class="float-none w-auto px-2">Contatos</legend>
 
+    <div id="contacts-container">
+      <%= form.fields_for :contacts do |contact_fields| %>
+        <%= render 'contact_fields', f: contact_fields %>
+      <% end %>
+    </div>
 
-  <h5>Contatos</h5>
-  
-
-  <button type="button" id="add-contact" class="btn btn-outline-primary mb-3">
-    Adicionar Contato
-  </button>
+    <button type="button" id="add-contact" class="btn btn-outline-primary mb-3">
+      Adicionar Contato
+    </button>
+  </fieldset>
 
   <div class="d-flex justify-content-between">
     <%=
@@ -99,33 +104,24 @@
   </div>
 <% end %>
 
-<!-- Template oculto para novos contatos -->
 <template id="contact-template">
-  <div class="contact-fields mb-3">
+  <div class="contact-fields mb-3" data-existing="false">
+    <input type="hidden" name="proponent[contacts_attributes][INDEX][_destroy]" class="destroy-flag" value="false" />
     <div class="row g-2">
       <div class="col-md-4">
-        <label for="">Tipo</label>
-        <select
-          name="proponent[contacts_attributes][INDEX][contact_type]"
-          class="form-select"
-        >
-          <option>celular</option>
-          <option>whatsapp</option>
-          <option>email</option>
+        <label>Tipo</label>
+        <select name="proponent[contacts_attributes][INDEX][contact_type]" class="form-select">
+          <option value="celular">Celular</option>
+          <option value="whatsapp">WhatsApp</option>
+          <option value="email">E-mail</option>
         </select>
       </div>
       <div class="col-md-6">
-        <label for="">Contato</label>
-        <input
-          type="text"
-          name="proponent[contacts_attributes][INDEX][value]"
-          class="form-control"
-        />
+        <label>Contato</label>
+        <input type="text" name="proponent[contacts_attributes][INDEX][value]" class="form-control" />
       </div>
       <div class="col-md-2 d-flex align-items-end">
-        <button type="button" class="btn btn-danger remove-contact">
-          Remover
-        </button>
+        <button type="button" class="btn btn-danger remove-contact">Remover</button>
       </div>
     </div>
   </div>

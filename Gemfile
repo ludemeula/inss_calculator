@@ -43,6 +43,10 @@ gem 'webpacker', '~> 5.0' # Ou versão compatível
 gem 'jwt'
 gem 'bcrypt', '~> 3.1.7' # para criptografia de senhas
 
+gem 'sidekiq'
+gem 'sidekiq-cron'
+gem 'rspec-rails'
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem 'debug', platforms: %i[mri windows], require: 'debug/prelude'
