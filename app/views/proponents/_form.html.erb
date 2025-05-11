@@ -21,12 +21,12 @@
 
       <div class="col-md-3">
         <%= form.label :cpf, 'CPF', class: 'form-label' %>
-        <%= form.text_field :cpf, class: 'form-control', required: true %>
+        <%= form.text_field :cpf, class: 'form-control cpf-mask', required: true %>
       </div>
 
       <div class="col-md-3">
         <%= form.label :rg, 'RG', class: 'form-label' %>
-        <%= form.text_field :rg, class: 'form-control', required: true %>
+        <%= form.text_field :rg, class: 'form-control', required: true, maxlength: 11 %>
       </div>
     </div>
 
@@ -60,6 +60,7 @@
                             ),
                           class: 'form-control',
                           disabled: true,
+                          readonly: true,
                           id: 'inss-field'
         %>
       </div>

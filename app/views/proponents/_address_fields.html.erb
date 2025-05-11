@@ -3,22 +3,22 @@
 <div class="row mb-3">
   <div class="col-md-8">
     <%= f.label :street, 'Logradouro' %>
-    <%= f.text_field :street, class: 'form-control' %>
+    <%= f.text_field :street, class: 'form-control', maxlength: 100 %>
   </div>
   <div class="col-md-4">
     <%= f.label :number, 'Número' %>
-    <%= f.text_field :number, class: 'form-control' %>
+    <%= f.number_field :number, class: 'form-control' %>
   </div>
 </div>
 
 <div class="row mb-3">
   <div class="col-md-6">
     <%= f.label :neighborhood, 'Bairro' %>
-    <%= f.text_field :neighborhood, class: 'form-control' %>
+    <%= f.text_field :neighborhood, class: 'form-control', maxlength: 50 %>
   </div>
   <div class="col-md-6">
     <%= f.label :city, 'Cidade' %>
-    <%= f.text_field :city, class: 'form-control' %>
+    <%= f.text_field :city, class: 'form-control', maxlength: 50 %>
   </div>
 </div>
 
@@ -65,6 +65,6 @@
   </div>
   <div class="col-md-6">
     <%= f.label :zip_code, 'CEP' %>
-    <%= f.text_field :zip_code, class: 'form-control' %>
+    <%= f.text_field :zip_code, class: 'form-control cep-mask' %>
   </div>
 </div>
