@@ -10,6 +10,11 @@ AllCops:
     - "bin/**/*"
     - "node_modules/**/*"
     - "vendor/**/*"
+    - "public/**/*"       # Excluindo arquivos estáticos
+    - "log/**/*"           # Excluindo arquivos de log
+    - "tmp/**/*"           # Excluindo arquivos temporários
+    - "test/**/*"          # Excluindo arquivos de teste se não for necessário
+    - "spec/**/*"          # Excluindo arquivos de spec, se estiver usando RSpec
 
 Layout/LineLength:
   Max: 100
@@ -31,3 +36,19 @@ Layout/IndentationStyle:
 
 Layout/IndentationWidth:
   Width: 2
+
+Rails/HasManyOrHasOneDependent:
+  Enabled: true  # Garante que relacionamentos com has_many ou has_one tenham dependências apropriadas
+
+Rails/SkipsModelValidations:
+  Enabled: true  # Verifica se você não está ignorando validações em modelos
+
+Rails/UniqueValidationWithoutIndex:
+  Enabled: true  # Verifica se as validações de unicidade em modelos têm índices no banco de dados
+
+Rails/FindEach:
+  Enabled: true  # Recomenda o uso de `find_each` para iteração em coleções grandes de registros do banco de dados
+
+# Outras regras do Rails que podem ser úteis
+Rails/UnknownEnv:
+  Enabled: true  # Verifica se você está usando variáveis de ambiente desconhecidas em arquivos de configuração

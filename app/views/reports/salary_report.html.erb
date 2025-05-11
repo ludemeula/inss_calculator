@@ -1,0 +1,80 @@
+<h1 class="mb-4 text-center">Relatório de Faixas Salariais</h1>
+
+<div class="table-responsive mb-4">
+  <table class="table table-bordered table-striped align-middle text-center">
+    <thead class="table-light">
+      <tr>
+        <th scope="col">Faixa Salarial</th>
+        <th scope="col">Quantidade de Funcionários</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @report_data.each do |faixa, quantidade| %>
+        <tr>
+          <td><%= faixa %></td>
+          <td><%= quantidade %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<div class="mt-5">
+  <canvas
+    id="salaryChart"
+    height="100"
+    aria-label="Gráfico de Faixas Salariais"
+    role="img"
+  ></canvas>
+</div>
+
+<%= javascript_include_tag 'https://cdn.jsdelivr.net/npm/chart.js' %>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const ctx = document.getElementById('salaryChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: <%= raw @report_data.keys.to_json %>,
+        datasets: [
+          {
+            label: 'Quantidade de Funcionários',
+            data: <%= raw @report_data.values.to_json %>,
+            backgroundColor: '#6EC1E4',
+            borderColor: '#4A90E2',
+            borderWidth: 1,
+            borderRadius: 8,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: (context) => `${context.parsed.y} funcionário(s)`,
+            },
+          },
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            precision: 0,
+            title: {
+              display: true,
+              text: 'Funcionários',
+            },
+          },
+          x: {
+            title: {
+              display: true,
+              text: 'Faixas Salariais',
+            },
+          },
+        },
+      },
+    });
+  });
+</script>

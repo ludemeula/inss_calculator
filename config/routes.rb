@@ -16,9 +16,10 @@ Rails.application.routes.draw do
 
   get 'up' => 'rails/health#show', :as => :rails_health_check
 
+  get 'reports/salary_report', to: 'reports#salary_report', as: :salary_report
+
   resources :proponents do
     collection do
-      get :salary_report
       get :calculate_inss
     end
   end

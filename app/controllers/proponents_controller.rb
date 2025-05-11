@@ -1,44 +1,31 @@
 class ProponentsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_proponent, only: %i[show edit update destroy]
+  before_action :filter_empty_addresses!, only: %i[create update]
+  before_action :set_inss_discount, only: %i[create update]
 
   def index
     @proponents = Proponent.order(:id).page(params[:page]).per(5)
 
     respond_to do |format|
       format.html
-      format.json { render json: @proponents, include: [ :addresses, :contacts ] }
+      format.json { render json: @proponents, include: %i[addresses contacts] }
     end
   end
 
   def new
     @proponent = Proponent.new
-    # @proponent.addresses.build
-    build_missing_addresses
-    @proponent.contacts.build
+    build_missing_associations
   end
 
   def create
-    # byebug
-
-
-    # # Filtrando os endereços vazios antes de passar para o modelo
-    filtered_addresses = params[:proponent][:addresses_attributes].reject do |_, address|
-      address[:street].blank? && address[:number].blank? && address[:neighborhood].blank? && address[:city].blank? && address[:state].blank? && address[:zip_code].blank?
-    end
-
-    # Atualizando os parâmetros filtrados
-    params[:proponent][:addresses_attributes] = filtered_addresses
-
     @proponent = Proponent.new(proponent_params)
-    @proponent.inss_discount = InssCalculator.calculate(@proponent.salary)
 
     respond_to do |format|
       if @proponent.save
         format.html { redirect_to proponents_path, notice: 'Proponente criado com sucesso!' }
         format.json { render json: @proponent, status: :created }
       else
-        p @proponent.errors.full_messages
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @proponent.errors, status: :unprocessable_entity }
       end
@@ -48,32 +35,20 @@ class ProponentsController < ApplicationController
   def show
     respond_to do |format|
       format.html
-      format.json { render json: @proponent, include: [ :addresses, :contacts ] }
+      format.json { render json: @proponent, include: %i[addresses contacts] }
     end
   end
 
   def edit
-    build_missing_addresses
+    build_missing_associations
   end
 
   def update
-    @proponent.inss_discount = InssCalculator.calculate(@proponent.salary)
-
-    # byebug
-    # Filtrando os endereços vazios antes de passar para o modelo
-    filtered_addresses = params[:proponent][:addresses_attributes].reject do |_, address|
-      address[:street].blank? && address[:number].blank? && address[:neighborhood].blank? && address[:city].blank? && address[:state].blank? && address[:zip_code].blank?
-    end
-
-    # Atualizando os parâmetros filtrados
-    params[:proponent][:addresses_attributes] = filtered_addresses
-
     respond_to do |format|
       if @proponent.update(proponent_params)
         format.html { redirect_to @proponent, notice: 'Proponente atualizado com sucesso.' }
         format.json { render json: @proponent }
       else
-        p @proponent.errors.full_messages
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @proponent.errors, status: :unprocessable_entity }
       end
@@ -92,28 +67,7 @@ class ProponentsController < ApplicationController
     end
   end
 
-  def salary_report
-    @ranges = {
-      'Até R$ 1.518,00' => 0...1518.00,
-      'R$ 1.518,01 - R$ 2.793,88' => 1518.1...2793.88,
-      'R$ 52.793,89 - R$ 4.190,83' => 2793.89...4190.83,
-      'R$ 4.190,84 - R$ 8.157,41' => 4190.84...8157.41,
-      'Acima de R$ 8.157,42' => 8157.42..Float::INFINITY
-    }
-
-    @report_data = @ranges.transform_values do |range|
-      Proponent.where(salary: range).count
-    end
-
-    respond_to do |format|
-      format.html
-      format.json { render json: @report_data }
-    end
-  end
-
   def calculate_inss
-    # byebug
-    # params[:salary] = params[:salary].gsub('.', '').gsub(',', '.').to_f
     salary = params[:salary].to_f
     discount = InssCalculator.calculate(salary)
     render json: { inss_discount: discount }
@@ -121,21 +75,35 @@ class ProponentsController < ApplicationController
 
   private
 
-  def build_missing_addresses
-    tipos = @proponent.addresses.map(&:address_type)
-    @proponent.addresses.build(address_type: 'principal') unless tipos.include?('principal')
-    @proponent.addresses.build(address_type: 'secundario') unless tipos.include?('secundario')
-  end
-
   def set_proponent
     @proponent = Proponent.find_by(id: params[:id])
+    return if @proponent
 
-    unless @proponent
-      respond_to do |format|
-        format.html { redirect_to proponents_path, alert: 'Proponente não encontrado.' }
-        format.json { render json: { error: 'Proponente não encontrado' }, status: :not_found }
-      end
+    respond_to do |format|
+      format.html { redirect_to proponents_path, alert: 'Proponente não encontrado.' }
+      format.json { render json: { error: 'Proponente não encontrado' }, status: :not_found }
     end
+  end
+
+  def build_missing_associations
+    types = @proponent.addresses.map(&:address_type)
+    @proponent.addresses.build(address_type: 'principal') unless types.include?('principal')
+    @proponent.addresses.build(address_type: 'secundario') unless types.include?('secundario')
+    @proponent.contacts.build if @proponent.contacts.empty?
+  end
+
+  def filter_empty_addresses!
+    return unless params[:proponent]&.dig(:addresses_attributes)
+
+    params[:proponent][:addresses_attributes].reject! do |_, address|
+      %i[street number neighborhood city state zip_code].all? { |field| address[field].blank? }
+    end
+  end
+
+  def set_inss_discount
+    salary = params[:proponent][:salary].to_f
+    @proponent ||= Proponent.new
+    @proponent.inss_discount = InssCalculator.calculate(salary)
   end
 
   def proponent_params
@@ -147,7 +115,9 @@ class ProponentsController < ApplicationController
       :birth_date,
       :salary,
       :inss_discount,
-      addresses_attributes: %i[id street number neighborhood city state zip_code address_type _destroy],
+      addresses_attributes: %i[
+        id street number neighborhood city state zip_code address_type _destroy
+      ],
       contacts_attributes: %i[id contact_type value _destroy]
     )
   end
