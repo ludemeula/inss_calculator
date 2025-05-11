@@ -2,7 +2,7 @@ class RecalculateInssJob < ApplicationJob
   queue_as :default
 
   def perform
-    Rails.logger.info "Iniciando o cálculo e atualização de INSS para os proponentes."
+    Rails.logger.info 'Iniciando o cálculo e atualização de INSS para os proponentes.'
 
     Proponent.find_each(batch_size: 100) do |proponent|
       begin
@@ -17,6 +17,6 @@ class RecalculateInssJob < ApplicationJob
       end
     end
 
-    Rails.logger.info "Cálculo e atualização de INSS concluídos para todos os proponentes."
+    Rails.logger.info 'Cálculo e atualização de INSS concluídos para todos os proponentes.'
   end
 end

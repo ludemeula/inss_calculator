@@ -20,7 +20,7 @@ class ProponentsController < ApplicationController
 
   def create
     # byebug
-    
+
 
     # # Filtrando os endereços vazios antes de passar para o modelo
     filtered_addresses = params[:proponent][:addresses_attributes].reject do |_, address|
