@@ -48,6 +48,7 @@ end
     city: Faker::Address.city,
     state: Faker::Address.state_abbr,
     zip_code: Faker::Address.zip_code,
+    address_type: 'principal'
   )
 
   rand(1..2).times do

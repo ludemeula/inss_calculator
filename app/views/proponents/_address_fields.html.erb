@@ -1,0 +1,70 @@
+<%= f.hidden_field :address_type, value: type %>
+
+<div class="row mb-3">
+  <div class="col-md-8">
+    <%= f.label :street, 'Logradouro' %>
+    <%= f.text_field :street, class: 'form-control' %>
+  </div>
+  <div class="col-md-4">
+    <%= f.label :number, 'Número' %>
+    <%= f.text_field :number, class: 'form-control' %>
+  </div>
+</div>
+
+<div class="row mb-3">
+  <div class="col-md-6">
+    <%= f.label :neighborhood, 'Bairro' %>
+    <%= f.text_field :neighborhood, class: 'form-control' %>
+  </div>
+  <div class="col-md-6">
+    <%= f.label :city, 'Cidade' %>
+    <%= f.text_field :city, class: 'form-control' %>
+  </div>
+</div>
+
+<div class="row mb-3">
+  <div class="col-md-6">
+    <%= f.label :state, 'Estado' %>
+    <%=
+      f.select :state,
+                            options_for_select(
+                              [
+                                ['AC - Acre', 'AC'],
+                                ['AL - Alagoas', 'AL'],
+                                ['AP - Amapá', 'AP'],
+                                ['AM - Amazonas', 'AM'],
+                                ['BA - Bahia', 'BA'],
+                                ['CE - Ceará', 'CE'],
+                                ['DF - Distrito Federal', 'DF'],
+                                ['ES - Espírito Santo', 'ES'],
+                                ['GO - Goiás', 'GO'],
+                                ['MA - Maranhão', 'MA'],
+                                ['MT - Mato Grosso', 'MT'],
+                                ['MS - Mato Grosso do Sul', 'MS'],
+                                ['MG - Minas Gerais', 'MG'],
+                                ['PA - Pará', 'PA'],
+                                ['PB - Paraíba', 'PB'],
+                                ['PR - Paraná', 'PR'],
+                                ['PE - Pernambuco', 'PE'],
+                                ['PI - Piauí', 'PI'],
+                                ['RJ - Rio de Janeiro', 'RJ'],
+                                ['RN - Rio Grande do Norte', 'RN'],
+                                ['RS - Rio Grande do Sul', 'RS'],
+                                ['RO - Rondônia', 'RO'],
+                                ['RR - Roraima', 'RR'],
+                                ['SC - Santa Catarina', 'SC'],
+                                ['SP - São Paulo', 'SP'],
+                                ['SE - Sergipe', 'SE'],
+                                ['TO - Tocantins', 'TO'],
+                              ],
+                              f.object.state,
+                            ),
+                            { prompt: 'Selecione um estado' },
+                            class: 'form-select'
+    %>
+  </div>
+  <div class="col-md-6">
+    <%= f.label :zip_code, 'CEP' %>
+    <%= f.text_field :zip_code, class: 'form-control' %>
+  </div>
+</div>

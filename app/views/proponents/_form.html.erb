@@ -1,4 +1,15 @@
-<%= form_with model: proponent, local: true, class: "needs-validation" do |form| %>
+<%= form_with model: proponent, local: true do |form| %>
+  <% if proponent.errors.any? %>
+    <div class="alert alert-danger">
+      <h4><%= pluralize(proponent.errors.count, "erro") %> impediram o salvamento:</h4>
+      <ul>
+        <% proponent.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
   <fieldset class="border p-3 rounded mb-4">
     <legend class="float-none w-auto px-2">Informações Pessoais</legend>
 
@@ -33,83 +44,36 @@
     <div class="row mb-3">
       <div class="col-md-6">
         <%= form.label :salary, 'Salário (R$)', class: 'form-label' %>
-        <%= form.number_field :salary, step: 0.01, class: 'form-control', id: 'salary-input' %>
+        <%= form.text_field :salary, step: 0.01, class: 'form-control', id: 'salary-input' %>
       </div>
 
       <div class="col-md-6">
         <%= form.label :inss_discount, 'Desconto INSS (R$)', class: 'form-label' %>
-        <%= form.text_field :inss_discount, class: 'form-control', disabled: true, id: 'inss-field' %>
+        <%= form.text_field :inss_discount, 
+        value: number_to_currency(proponent.inss_discount, unit: 'R$ ', delimiter: '.', separator: ','),
+        class: 'form-control', disabled: true, id: 'inss-field' %>
       </div>
     </div>
   </fieldset>
 
   <%= form.fields_for :addresses do |address_fields| %>
-    <fieldset class="border p-3 rounded mb-4">
-  <legend class="float-none w-auto px-2">Endereço</legend>
-
-  <div class="row mb-3">
-    <div class="col-md-8">
-      <%= address_fields.label :street, 'Logradouro' %>
-      <%= address_fields.text_field :street, class: 'form-control' %>
-    </div>
-    <div class="col-md-4">
-      <%= address_fields.label :number, 'Número' %>
-      <%= address_fields.text_field :number, class: 'form-control' %>
-    </div>
-  </div>
-
-  <div class="row mb-3">
-    <div class="col-md-6">
-      <%= address_fields.label :neighborhood, 'Bairro' %>
-      <%= address_fields.text_field :neighborhood, class: 'form-control' %>
-    </div>
-    <div class="col-md-6">
-      <%= address_fields.label :city, 'Cidade' %>
-      <%= address_fields.text_field :city, class: 'form-control' %>
-    </div>
-  </div>
-
-  <div class="row mb-3">
-    <div class="col-md-6">
-    <%= address_fields.label :state, 'Estado' %>
-    <%= address_fields.select :state, options_for_select([
-      ['AC - Acre', 'AC'],
-      ['AL - Alagoas', 'AL'],
-      ['AP - Amapá', 'AP'],
-      ['AM - Amazonas', 'AM'],
-      ['BA - Bahia', 'BA'],
-      ['CE - Ceará', 'CE'],
-      ['DF - Distrito Federal', 'DF'],
-      ['ES - Espírito Santo', 'ES'],
-      ['GO - Goiás', 'GO'],
-      ['MA - Maranhão', 'MA'],
-      ['MT - Mato Grosso', 'MT'],
-      ['MS - Mato Grosso do Sul', 'MS'],
-      ['MG - Minas Gerais', 'MG'],
-      ['PA - Pará', 'PA'],
-      ['PB - Paraíba', 'PB'],
-      ['PR - Paraná', 'PR'],
-      ['PE - Pernambuco', 'PE'],
-      ['PI - Piauí', 'PI'],
-      ['RJ - Rio de Janeiro', 'RJ'],
-      ['RN - Rio Grande do Norte', 'RN'],
-      ['RS - Rio Grande do Sul', 'RS'],
-      ['RO - Rondônia', 'RO'],
-      ['RR - Roraima', 'RR'],
-      ['SC - Santa Catarina', 'SC'],
-      ['SP - São Paulo', 'SP'],
-      ['SE - Sergipe', 'SE'],
-      ['TO - Tocantins', 'TO']
-    ], address_fields.object.state), { prompt: 'Selecione um estado' }, class: 'form-select' %>    
-    </div>
-    <div class="col-md-6">
-      <%= address_fields.label :zip_code, 'CEP' %>
-      <%= address_fields.text_field :zip_code, class: 'form-control' %>
-    </div>
-  </div>
-</fieldset>
-
+    <% tipo = address_fields.object.address_type %>
+  
+    <% if tipo == 'principal' %>
+      <fieldset class="border p-3 rounded mb-4">
+        <legend class="float-none w-auto px-2">Endereço Principal</legend>
+        <%= render 'address_fields', f: address_fields, type: 'principal' %>
+      </fieldset>
+    <% elsif tipo == 'secundario' %>
+      <fieldset class="border p-3 rounded mb-4">
+        <legend class="float-none w-auto px-2">Endereço Secundário</legend>
+        <%= render 'address_fields', f: address_fields, type: 'secundario' %>
+      </fieldset>
+    <% end %>
   <% end %>
+  
+
+
 
   <h5>Contatos</h5>
   

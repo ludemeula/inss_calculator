@@ -8,6 +8,7 @@
   <table class="table table-bordered table-striped">
     <thead class="table-light">
       <tr>
+        <th>id</th>
         <th>Nome</th>
         <th>CPF</th>
         <th>Salário</th>
@@ -19,6 +20,7 @@
       <tbody>
         <% @proponents.each do |p| %>
           <tr>
+            <td><%= p.id %></td>
             <td><%= p.name %></td>
             <td><%= format_cpf(p.cpf) %></td>
             <td><%= number_to_currency(p.salary, unit: 'R$ ') %></td>

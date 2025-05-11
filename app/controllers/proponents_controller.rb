@@ -3,7 +3,7 @@ class ProponentsController < ApplicationController
   before_action :set_proponent, only: %i[show edit update destroy]
 
   def index
-    @proponents = Proponent.page(params[:page]).per(5)
+    @proponents = Proponent.order(:id).page(params[:page]).per(5)
 
     respond_to do |format|
       format.html
@@ -13,11 +13,23 @@ class ProponentsController < ApplicationController
 
   def new
     @proponent = Proponent.new
-    @proponent.addresses.build
+    # @proponent.addresses.build
+    build_missing_addresses
     @proponent.contacts.build
   end
 
   def create
+    # byebug
+    
+
+    # # Filtrando os endereços vazios antes de passar para o modelo
+    filtered_addresses = params[:proponent][:addresses_attributes].reject do |_, address|
+      address[:street].blank? && address[:number].blank? && address[:neighborhood].blank? && address[:city].blank? && address[:state].blank? && address[:zip_code].blank?
+    end
+
+    # Atualizando os parâmetros filtrados
+    params[:proponent][:addresses_attributes] = filtered_addresses
+
     @proponent = Proponent.new(proponent_params)
     @proponent.inss_discount = InssCalculator.calculate(@proponent.salary)
 
@@ -26,7 +38,7 @@ class ProponentsController < ApplicationController
         format.html { redirect_to proponents_path, notice: 'Proponente criado com sucesso!' }
         format.json { render json: @proponent, status: :created }
       else
-        puts @proponent.errors.full_messages
+        p @proponent.errors.full_messages
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @proponent.errors, status: :unprocessable_entity }
       end
@@ -41,14 +53,27 @@ class ProponentsController < ApplicationController
   end
 
   def edit
+    build_missing_addresses
   end
 
   def update
+    @proponent.inss_discount = InssCalculator.calculate(@proponent.salary)
+
+    # byebug
+    # Filtrando os endereços vazios antes de passar para o modelo
+    filtered_addresses = params[:proponent][:addresses_attributes].reject do |_, address|
+      address[:street].blank? && address[:number].blank? && address[:neighborhood].blank? && address[:city].blank? && address[:state].blank? && address[:zip_code].blank?
+    end
+
+    # Atualizando os parâmetros filtrados
+    params[:proponent][:addresses_attributes] = filtered_addresses
+
     respond_to do |format|
       if @proponent.update(proponent_params)
         format.html { redirect_to @proponent, notice: 'Proponente atualizado com sucesso.' }
         format.json { render json: @proponent }
       else
+        p @proponent.errors.full_messages
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @proponent.errors, status: :unprocessable_entity }
       end
@@ -86,12 +111,20 @@ class ProponentsController < ApplicationController
   end
 
   def calculate_inss
+    # byebug
+    # params[:salary] = params[:salary].gsub('.', '').gsub(',', '.').to_f
     salary = params[:salary].to_f
     discount = InssCalculator.calculate(salary)
     render json: { inss_discount: discount }
   end
 
   private
+
+  def build_missing_addresses
+    tipos = @proponent.addresses.map(&:address_type)
+    @proponent.addresses.build(address_type: 'principal') unless tipos.include?('principal')
+    @proponent.addresses.build(address_type: 'secundario') unless tipos.include?('secundario')
+  end
 
   def set_proponent
     @proponent = Proponent.find_by(id: params[:id])
@@ -106,13 +139,14 @@ class ProponentsController < ApplicationController
 
   def proponent_params
     params.require(:proponent).permit(
+      :id,
       :name,
       :cpf,
       :rg,
       :birth_date,
       :salary,
       :inss_discount,
-      addresses_attributes: %i[id street number neighborhood city state zip_code _destroy],
+      addresses_attributes: %i[id street number neighborhood city state zip_code address_type _destroy],
       contacts_attributes: %i[id contact_type value _destroy]
     )
   end

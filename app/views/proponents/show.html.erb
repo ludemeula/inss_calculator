@@ -7,8 +7,8 @@
       <p class="card-text"><strong>CPF:</strong> <%= format_cpf(@proponent.cpf) %></p>
       <p class="card-text"><strong>RG:</strong> <%= @proponent.rg %></p>
       <p class="card-text"><strong>Data de Nascimento:</strong> <%= l(@proponent.birth_date, format: :default) %></p>
-      <p class="card-text"><strong>Salário:</strong> <%= number_to_currency(@proponent.salary, unit: 'R$ ') %></p>
-      <p class="card-text"><strong>Desconto INSS:</strong> <%= number_to_currency(@proponent.inss_discount, unit: 'R$ ') %></p>
+      <p class="card-text"><strong>Salário:</strong> <%= number_to_currency(@proponent.salary, unit: 'R$ ', separator: ',', delimiter: '.') %></p>
+      <p class="card-text"><strong>Desconto INSS:</strong> <%= number_to_currency(@proponent.inss_discount, unit: 'R$ ', separator: ',', delimiter: '.') %></p>
   
       <hr>
   
@@ -40,7 +40,7 @@
   
         <% if @proponent.addresses.any? %>
           <% @proponent.addresses.each_with_index do |address, index| %>
-            <p><strong>Endereço <%= index + 1 %>:</strong></p>
+            <p><strong><%= address.principal? ? 'Endereço Principal' : 'Endereço Secundário' %>:</strong></p>
             <ul>
               <li><strong>Rua:</strong> <%= address.street %></li>
               <li><strong>Número:</strong> <%= address.number %></li>

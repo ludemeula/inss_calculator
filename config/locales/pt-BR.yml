@@ -1,6 +1,25 @@
 pt-BR:
-  hello: "Olá mundo"
-  
+  activerecord:
+    errors:
+      models:
+        proponent:
+          attributes:
+            cpf:
+              taken: "já está em uso"
+    models:
+      proponent: "Proponente"
+    attributes:
+      proponent:
+        name: "Nome"
+        cpf: "CPF"
+        rg: "RG"
+        birth_date: "Data de nascimento"
+        salary: "Salário"
+  errors:
+    messages:
+      blank: "não pode ficar em branco"
+
+
   date:
     formats:
       default: "%d/%m/%Y"
