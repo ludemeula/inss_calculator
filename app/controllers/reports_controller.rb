@@ -7,7 +7,7 @@ class ReportsController < ApplicationController
       'R$ 1.518,01 - R$ 2.793,88' => 1518.01...2793.88,
       'R$ 2.793,89 - R$ 4.190,83' => 2793.89...4190.83,
       'R$ 4.190,84 - R$ 8.157,41' => 4190.84...8157.41,
-      'Acima de R$ 8.157,42' => 8157.42..Float::INFINITY,
+      'Acima de R$ 8.157,42' => 8157.42..Float::INFINITY
     }
 
     @report_data = @ranges.transform_values { |range| Proponent.where(salary: range).count }

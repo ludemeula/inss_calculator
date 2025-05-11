@@ -7,7 +7,7 @@ class RecalculateInssJob < ApplicationJob
     Proponent.find_each(batch_size: 100) do |proponent|
       begin
         new_discount = InssCalculator.calculate(proponent.salary)
-        proponent.update_columns(inss_discount: new_discount) # Atualiza diretamente no banco
+        proponent.update(inss_discount: new_discount) # Atualiza diretamente no banco
 
         Rails.logger.info "Desconto INSS atualizado para o proponente #{proponent.id}: R$ #{new_discount}"
 
