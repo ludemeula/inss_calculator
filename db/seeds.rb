@@ -1,21 +1,8 @@
+User.create!(name: 'Admin', email: 'admin@example.com', password: 'senha123')
 
-User.create!(
-  name: 'Admin',
-  email: 'admin@example.com',
-  password: 'senha123',
-)
+User.create!(name: 'Maria Oliveira', email: 'maria.oliveira@example.com', password: 'senha456')
 
-User.create!(
-  name: 'Maria Oliveira',
-  email: 'maria.oliveira@example.com',
-  password: 'senha456',
-)
-
-User.create!(
-  name: 'Carlos Pereira',
-  email: 'carlos.pereira@example.com',
-  password: 'senha789',
-)
+User.create!(name: 'Carlos Pereira', email: 'carlos.pereira@example.com', password: 'senha789')
 
 puts 'Usuários criados com sucesso!'
 
@@ -48,7 +35,7 @@ end
     city: Faker::Address.city,
     state: Faker::Address.state_abbr,
     zip_code: Faker::Address.zip_code,
-    address_type: 'principal'
+    address_type: 'principal',
   )
 
   rand(1..2).times do
