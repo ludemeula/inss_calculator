@@ -1,4 +1,3 @@
-# app/controllers/sessions_controller.rb
 class SessionsController < ApplicationController
   def new
     redirect_to proponents_path if current_user
@@ -16,7 +15,7 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    session[:user_id] = nil
+    session.delete(:user_id)
     redirect_to login_path, notice: 'Logout efetuado com sucesso.'
   end
 end

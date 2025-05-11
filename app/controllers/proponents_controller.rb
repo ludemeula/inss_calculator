@@ -94,10 +94,11 @@ class ProponentsController < ApplicationController
 
   def salary_report
     @ranges = {
-      'Até R$ 2.000' => 0...2000,
-      'R$ 2.000 - R$ 5.000' => 2000...5000,
-      'R$ 5.000 - R$ 10.000' => 5000...10_000,
-      'Acima de R$ 10.000' => 10_000..Float::INFINITY
+      'Até R$ 1.518,00' => 0...1518.00,
+      'R$ 1.518,01 - R$ 2.793,88' => 1518.1...2793.88,
+      'R$ 52.793,89 - R$ 4.190,83' => 2793.89...4190.83,
+      'R$ 4.190,84 - R$ 8.157,41' => 4190.84...8157.41,
+      'Acima de R$ 8.157,42' => 8157.42..Float::INFINITY
     }
 
     @report_data = @ranges.transform_values do |range|
